@@ -21,10 +21,20 @@ impl Config {
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.file_path)?;
-
-    println!("With text:\n{contents}");
-
+    let result = search(&config.query, &contents);
+    println!("{result:?}");
     Ok(())
+}
+
+pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
+    let mut result = Vec::new();
+
+    for line in content.lines() {
+        if line.contains(query) {
+            result.push(line);
+        }
+    }
+    result
 }
 
 #[cfg(test)]
@@ -32,21 +42,16 @@ mod tests {
     use super::*;
 
     #[test]
-    #[should_panic]
-    fn config_new_should_fail() {
-        let args: Vec<String> = vec![String::from("program"), String::from("search")];
-        Config::new(&args);
-    }
+    fn one_result() {
+        let query = "duct";
+        let contents = "\
+Rust:
+safe, fast, duct, productive.
+Pick three.";
 
-    #[test]
-    fn config_new_should_succeed() {
-        let args: Vec<String> = vec![
-            String::from("program"),
-            String::from("search"),
-            String::from("file.txt"),
-        ];
-        let conf = Config::new(&args)?;
-        assert_eq!(conf.query, "search");
-        assert_eq!(conf.file_path, "file.txt");
+        assert_eq!(
+            vec!["safe, fast, duct, productive."],
+            search(query, contents)
+        );
     }
 }
