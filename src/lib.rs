@@ -1,40 +1,44 @@
 //! # Minigrep
 //!
 //! `minigrep` is a funny exercise to learn Rust syntax
-//! by building a simple program to search for a certain 
+//! by building a simple program to search for a certain
 //! string in a given text file.
 
-use std::env;
 use std::error::Error;
 use std::fs;
 
-pub struct Config {
-    pub query: String,
-    pub file_path: String,
-    pub ignore_case: bool,
-}
+pub use self::wrapper::Config;
 
-impl Config {
-    pub fn new(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
-        args.next();
+pub mod wrapper {
+    use std::env;
+    pub struct Config {
+        pub query: String,
+        pub file_path: String,
+        pub ignore_case: bool,
+    }
 
-        let query = match args.next() {
-            Some(arg) => arg,
-            None => return Err("Didn't get a query string"),
-        };
+    impl Config {
+        pub fn new(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+            args.next();
 
-        let file_path = match args.next() {
-            Some(arg) => arg,
-            None => return Err("Didn't get a file path"),
-        };
+            let query = match args.next() {
+                Some(arg) => arg,
+                None => return Err("Didn't get a query string"),
+            };
 
-        let ignore_case = env::var("IGNORE_CASE").is_ok();
+            let file_path = match args.next() {
+                Some(arg) => arg,
+                None => return Err("Didn't get a file path"),
+            };
 
-        Ok(Config {
-            query,
-            file_path,
-            ignore_case,
-        })
+            let ignore_case = env::var("IGNORE_CASE").is_ok();
+
+            Ok(Config {
+                query,
+                file_path,
+                ignore_case,
+            })
+        }
     }
 }
 
