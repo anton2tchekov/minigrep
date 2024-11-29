@@ -1,3 +1,9 @@
+//! # Minigrep
+//!
+//! `minigrep` is a funny exercise to learn Rust syntax
+//! by building a simple program to search for a certain 
+//! string in a given text file.
+
 use std::env;
 use std::error::Error;
 use std::fs;
@@ -54,6 +60,21 @@ pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
         .collect()
 }
 
+/// Search a query (string slice) in a given content (also a string slice).
+/// It is case insensitive.
+///
+/// # Examples
+///
+/// ```
+/// let query = "RuS";
+/// let contents = "\
+/// My Russian
+/// Rust lover
+/// Rustan.";
+/// let find = minigrep::search_case_insensitive(query, contents);
+///
+/// assert_eq!(vec!["My Russian", "Rust lover", "Rustan."], find);
+/// ```
 pub fn search_case_insensitive<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
     let mut result = Vec::new();
 
