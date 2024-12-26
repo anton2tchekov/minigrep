@@ -1,6 +1,6 @@
 ## Minigrep exercise
 
-This is my implementation of the following exercise to learn Rust [web server project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
+This is my implementation of the following exercise to learn Rust [cli project](https://doc.rust-lang.org/book/ch12-00-an-io-project.html)
 
 Author: [Antoine Montiel](mailto:) <br>
 Description: simple grep command to find for a string into a document. Returns the lines containing the query.
